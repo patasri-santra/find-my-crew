@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #FF7058;
+  --color-surface: #FAF9F6;
+  --color-peach: #FFE7DE;
+  --color-ink: #252525;
+  --color-success: #82A88B;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+body {
+  @apply bg-surface text-ink font-sans;
+}
