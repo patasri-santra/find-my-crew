@@ -4,7 +4,7 @@ export const notFound = (req, res, next) => {
 };
 
 export const errorHandler = (err, req, res, next) => {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let statusCode = err.statusCode || (res.statusCode === 200 ? 500 : res.statusCode);
   let message = err.message;
 
   if (err.name === "ValidationError") {
@@ -14,6 +14,10 @@ export const errorHandler = (err, req, res, next) => {
   if (err.name === "CastError") {
     statusCode = 400;
     message = "Invalid ID format";
+  }
+  if (err.name === "MulterError") {
+    statusCode = 400;
+    message = err.code === "LIMIT_FILE_SIZE" ? "Image must be 5 MB or smaller" : err.message;
   }
   if (err.code === 11000) {
     statusCode = 409;

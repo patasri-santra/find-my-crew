@@ -1,13 +1,17 @@
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import authRoutes from "./routes/authRoutes.js";
-dotenv.config();
+import activityRoutes from "./routes/activityRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import joinRequestRoutes from "./routes/joinRequestRoutes.js";
+import myActivityRoutes from "./routes/myActivityRoutes.js";
 
 const app = express();
 
+app.set("trust proxy", 1); // Render sits behind one proxy; needed for per-user rate limits
 app.use(cors({ origin: process.env.CLIENT_URL }));
 app.use(express.json());
 
@@ -16,6 +20,11 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/activities", activityRoutes);
+app.use("/api/uploads", uploadRoutes);
+app.use("/api/join-requests", joinRequestRoutes);
+app.use("/api/my-activities", myActivityRoutes);
+
 app.use(notFound);
 app.use(errorHandler);
 
