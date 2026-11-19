@@ -26,3 +26,26 @@ export const todayInputValue = () => {
   const day = String(now.getDate()).padStart(2, "0");
   return `${now.getFullYear()}-${month}-${day}`;
 };
+
+export const formatFullDate = (isoString) =>
+  new Intl.DateTimeFormat(undefined, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(isoString));
+
+export const formatTime = (date) =>
+  new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(date);
+
+const toMinutes = (clock) => {
+  const [hours, minutes] = clock.split(":").map(Number);
+  return hours * 60 + minutes;
+};
+
+// End moment = start moment + (endTime - startTime), so it shows in the viewer's own timezone too
+export const getEndDate = ({ date, startTime, endTime }) => {
+  if (!endTime) return null;
+  const minutes = toMinutes(endTime) - toMinutes(startTime);
+  return new Date(new Date(date).getTime() + minutes * 60000);
+};

@@ -8,6 +8,7 @@ import ComingSoonPage from "../pages/ComingSoonPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import ExplorePage from "../pages/ExplorePage";
 import ProtectedRoute from "./ProtectedRoute";
+import ActivityDetailsPage from "../pages/ActivityDetailsPage";
 
 export default function AppRoutes() {
   return (
@@ -17,7 +18,7 @@ export default function AppRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/explore" element={<ExplorePage />} />
-        <Route path="/activities/:id" element={<ComingSoonPage title="Activity Details" />} />
+        <Route path="/activities/:id" element={<ActivityDetailsPage />} />
         <Route path="/profile/:id" element={<ComingSoonPage title="Profile" />} />
 
         <Route element={<ProtectedRoute />}>
