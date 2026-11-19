@@ -87,8 +87,8 @@ export const validateActivityInput = (body, { partial = false } = {}) => {
     };
   }
 
-  if (body.coverImage !== undefined && body.coverImage !== "") {
-    assertCloudinaryUrl(body.coverImage, "Cover image");
+  if (body.coverImage !== undefined) {
+    if (body.coverImage !== "") assertCloudinaryUrl(body.coverImage, "Cover image");
     data.coverImage = body.coverImage;
   }
 

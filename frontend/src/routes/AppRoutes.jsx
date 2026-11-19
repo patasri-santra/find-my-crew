@@ -9,6 +9,9 @@ import NotFoundPage from "../pages/NotFoundPage";
 import ExplorePage from "../pages/ExplorePage";
 import ProtectedRoute from "./ProtectedRoute";
 import ActivityDetailsPage from "../pages/ActivityDetailsPage";
+import CreateActivityPage from "../pages/CreateActivityPage";
+import MyActivitiesPage from "../pages/MyActivitiesPage";
+import EditActivityPage from "../pages/EditActivityPage";
 
 export default function AppRoutes() {
   return (
@@ -23,8 +26,9 @@ export default function AppRoutes() {
 
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/create-activity" element={<ComingSoonPage title="Create Activity" />} />
-          <Route path="/my-activities" element={<ComingSoonPage title="My Activities" />} />
+          <Route path="/create-activity" element={<CreateActivityPage />} />
+          <Route path="/my-activities" element={<MyActivitiesPage />} />
+          <Route path="/activities/:id/edit" element={<EditActivityPage />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

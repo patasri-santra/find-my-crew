@@ -20,11 +20,34 @@ export const getDayRange = (dateString) => {
 };
 
 // Today's date as YYYY-MM-DD in local time, for <input type="date" min="...">
-export const todayInputValue = () => {
-  const now = new Date();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${now.getFullYear()}-${month}-${day}`;
+export const toInputDate = (date) => {
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${date.getFullYear()}-${month}-${day}`;
+};
+
+export const toInputTime = (date) => {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+};
+
+export const todayInputValue = () => toInputDate(new Date());
+
+// "5 minutes ago", "yesterday"
+export const timeAgo = (isoString) => {
+  const seconds = Math.round((new Date(isoString).getTime() - Date.now()) / 1000);
+  const formatter = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+  const units = [
+    ["day", 86400],
+    ["hour", 3600],
+    ["minute", 60],
+  ];
+
+  for (const [unit, size] of units) {
+    if (Math.abs(seconds) >= size) return formatter.format(Math.round(seconds / size), unit);
+  }
+  return "just now";
 };
 
 export const formatFullDate = (isoString) =>
