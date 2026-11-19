@@ -28,7 +28,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen grid place-items-center px-4 py-10">
+    <div className="flex-1 grid place-items-center px-4 py-10">
       <form
         onSubmit={handleSubmit(onSubmit)}
         noValidate

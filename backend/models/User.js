@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, select: false },
     profileImage: { type: String, default: "" },
     bio: { type: String, default: "", maxlength: 300 },
+    locationLabel: { type: String, default: "", trim: true, maxlength: 80 },
     interests: { type: [String], default: [] },
     location: {
       type: { type: String, enum: ["Point"] },

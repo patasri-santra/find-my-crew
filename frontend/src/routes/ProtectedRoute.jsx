@@ -6,7 +6,7 @@ export default function ProtectedRoute() {
   const location = useLocation();
 
   if (loading) {
-    return <div className="min-h-screen grid place-items-center">Loading...</div>;
+    return <div className="grid flex-1 place-items-center">Loading...</div>;
   }
 
   return user ? <Outlet /> : <Navigate to="/login" state={{ from: location }} replace />;

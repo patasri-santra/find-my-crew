@@ -1,11 +1,10 @@
 import { CATEGORIES } from "../models/Activity.js";
 import { httpError } from "./httpError.js";
+import { lengthBetween, assertCloudinaryUrl } from "./validators.js";
 
 const TIME_REGEX = /^([01]\d|2[0-3]):[0-5]\d$/;
 
 const isString = (value) => typeof value === "string";
-const lengthBetween = (value, min, max) =>
-  isString(value) && value.trim().length >= min && value.trim().length <= max;
 
 export const assertEndAfterStart = (startTime, endTime) => {
   if (endTime && endTime <= startTime) {
@@ -89,19 +88,7 @@ export const validateActivityInput = (body, { partial = false } = {}) => {
   }
 
   if (body.coverImage !== undefined && body.coverImage !== "") {
-    let url;
-    try {
-      url = new URL(body.coverImage);
-    } catch {
-      throw httpError(400, "Cover image must be a valid URL");
-    }
-        if (
-      url.protocol !== "https:" ||
-      url.hostname !== "res.cloudinary.com" ||
-      !url.pathname.startsWith(`/${process.env.CLOUDINARY_CLOUD_NAME}/`)
-    ) {
-      throw httpError(400, "Cover image must be uploaded through the app");
-    }
+    assertCloudinaryUrl(body.coverImage, "Cover image");
     data.coverImage = body.coverImage;
   }
 
