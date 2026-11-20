@@ -12,6 +12,7 @@ import ActivityDetailsPage from "../pages/ActivityDetailsPage";
 import CreateActivityPage from "../pages/CreateActivityPage";
 import MyActivitiesPage from "../pages/MyActivitiesPage";
 import EditActivityPage from "../pages/EditActivityPage";
+import ProfilePage from "../pages/ProfilePage";
 
 export default function AppRoutes() {
   return (
@@ -22,7 +23,7 @@ export default function AppRoutes() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/explore" element={<ExplorePage />} />
         <Route path="/activities/:id" element={<ActivityDetailsPage />} />
-        <Route path="/profile/:id" element={<ComingSoonPage title="Profile" />} />
+        <Route path="/profile/:id" element={<ProfilePage />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardPage />} />

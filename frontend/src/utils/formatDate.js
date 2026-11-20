@@ -72,3 +72,7 @@ export const getEndDate = ({ date, startTime, endTime }) => {
   const minutes = toMinutes(endTime) - toMinutes(startTime);
   return new Date(new Date(date).getTime() + minutes * 60000);
 };
+
+
+export const formatMonthYear = (isoString) =>
+  new Intl.DateTimeFormat(undefined, { month: "long", year: "numeric" }).format(new Date(isoString));

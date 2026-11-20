@@ -1,44 +1,20 @@
-import { useRef, useState } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useRef } from "react";
 import { ImagePlus, Loader2, Trash2 } from "lucide-react";
-import { uploadImage } from "../../services/uploadService";
-
-const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_MB = 5;
+import useImageUpload from "../../hooks/useImageUpload";
 
 export default function ImageUpload({ value, onChange, onUploadingChange, label = "Cover image" }) {
   const inputRef = useRef(null);
-  const [uploading, setUploading] = useState(false);
+  const { uploading, upload } = useImageUpload();
 
-  const setBusy = (busy) => {
-    setUploading(busy);
-    onUploadingChange?.(busy);
-  };
+  useEffect(() => {
+    onUploadingChange?.(uploading);
+  }, [uploading, onUploadingChange]);
 
   const handleFile = async (event) => {
     const file = event.target.files[0];
     event.target.value = ""; // so picking the same file again still fires
-    if (!file) return;
-
-    // Quick checks for a friendly message; the server validates again
-    if (!ALLOWED_TYPES.includes(file.type)) {
-      toast.error("Please choose a JPG, PNG or WebP image");
-      return;
-    }
-    if (file.size > MAX_MB * 1024 * 1024) {
-      toast.error(`Image must be ${MAX_MB} MB or smaller`);
-      return;
-    }
-
-    setBusy(true);
-    try {
-      const { data } = await uploadImage(file);
-      onChange(data.url);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Upload failed, please try again");
-    } finally {
-      setBusy(false);
-    }
+    const url = await upload(file);
+    if (url) onChange(url);
   };
 
   return (
@@ -76,7 +52,7 @@ export default function ImageUpload({ value, onChange, onUploadingChange, label 
           >
             <ImagePlus size={28} className="text-primary" />
             Add a cover image
-            <span className="text-xs font-normal">JPG, PNG or WebP, up to {MAX_MB} MB</span>
+            <span className="text-xs font-normal">JPG, PNG or WebP, up to 5 MB</span>
           </button>
         )}
 

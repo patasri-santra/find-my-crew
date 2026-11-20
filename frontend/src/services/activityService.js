@@ -7,3 +7,5 @@ export const updateActivity = (id, payload) => api.put(`/activities/${id}`, payl
 export const cancelActivity = (id) => api.put(`/activities/${id}`, { status: "cancelled" });
 export const deleteActivity = (id) => api.delete(`/activities/${id}`);
 export const leaveActivity = (id) => api.delete(`/activities/${id}/leave`);
+export const getRecommendedActivities = (params = {}) => api.get("/activities/recommended", { params });
+export const getNearbyActivities = (params = {}) => api.get("/activities/nearby", { params });

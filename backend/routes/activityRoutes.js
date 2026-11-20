@@ -6,13 +6,15 @@ import {
   getActivityById,
   updateActivity,
   deleteActivity,
-  leaveActivity
+  leaveActivity,
+  getRecommendedActivities
 } from "../controllers/activityController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/nearby", getNearbyActivities); // must stay above "/:id"
+router.get("/nearby", getNearbyActivities);
+router.get("/recommended", protect, getRecommendedActivities); // must stay above "/:id"
 router.route("/").get(getActivities).post(protect, createActivity);
 router
   .route("/:id")

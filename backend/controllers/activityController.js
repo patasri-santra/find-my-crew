@@ -223,3 +223,40 @@ export const getMyJoinedActivities = async (req, res) => {
 
   res.status(200).json({ success: true, activities });
 };
+
+// GET /api/activities/recommended  (logged-in users)
+export const getRecommendedActivities = async (req, res) => {
+  const limit = Math.min(Math.max(parseInt(req.query.limit) || 6, 1), 20);
+
+  // Upcoming, not yours, not already joined, and still has room
+  const base = {
+    status: "active",
+    date: { $gt: new Date() },
+    host: { $ne: req.user._id },
+    participants: { $ne: req.user._id },
+    $expr: { $lt: [{ $size: "$participants" }, "$maxParticipants"] },
+  };
+
+  const interests = (req.user.interests || []).slice(0, 10);
+  let activities = [];
+
+  if (interests.length > 0) {
+    const regex = new RegExp(interests.map(escapeRegex).join("|"), "i");
+    activities = await Activity.find({
+      ...base,
+      $or: [{ title: regex }, { description: regex }, { category: regex }],
+    })
+      .sort({ date: 1 })
+      .limit(limit)
+      .populate("host", HOST_FIELDS);
+  }
+
+  const basedOnInterests = activities.length > 0;
+
+  // No interests, or no matches: fall back to whatever is happening soonest
+  if (!basedOnInterests) {
+    activities = await Activity.find(base).sort({ date: 1 }).limit(limit).populate("host", HOST_FIELDS);
+  }
+
+  res.status(200).json({ success: true, basedOnInterests, activities });
+};
